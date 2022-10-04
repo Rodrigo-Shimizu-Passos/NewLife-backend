@@ -1,20 +1,19 @@
-package br.com.itbeta.newlife.controller.dto;
+package br.com.itbeta.newlife.controller.form;
 
 import br.com.itbeta.newlife.conversor.EntityToDto;
 import br.com.itbeta.newlife.model.Apartamento;
 import br.com.itbeta.newlife.model.Morador;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import java.util.Set;
 
 @Getter
+@Setter
 @AllArgsConstructor
-public class MoradorDto {
-    private Long idMorador;
-    private ApartamentoDto idApto;//retorna um ApartamentoDto
+public class MoradorForm {
+    private Long idApto;
     private String nome;
     private String rg;
     private String cpf;
@@ -25,10 +24,8 @@ public class MoradorDto {
     private String telefoneEmerg;
     private String obs;
 
-    public MoradorDto(Morador morador){
-        EntityToDto entityToDto = new EntityToDto();
-        this.idMorador=morador.getIdMorador();
-        this.idApto=entityToDto.conversor(morador.getIdApto());//não tinha o getIdApto
+    public MoradorForm(Morador morador){
+        this.idApto=morador.getIdApto().getIdApto();//não tinha o getIdApto
         this.nome=morador.getNome();
         this.rg=morador.getRg();
         this.cpf=morador.getCpf();
@@ -39,5 +36,4 @@ public class MoradorDto {
         this.telefoneEmerg= morador.getTelefoneEmerg();
         this.obs=morador.getObs();
     }
-
 }

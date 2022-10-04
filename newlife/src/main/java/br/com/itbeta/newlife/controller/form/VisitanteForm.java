@@ -1,19 +1,17 @@
-package br.com.itbeta.newlife.controller.dto;
+package br.com.itbeta.newlife.controller.form;
 
 import br.com.itbeta.newlife.conversor.EntityToDto;
 import br.com.itbeta.newlife.model.Apartamento;
 import br.com.itbeta.newlife.model.Visitante;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 @Getter
+@Setter
 @AllArgsConstructor
-public class VisitanteDto {
-    private Long idVisitante;
-    private ApartamentoDto idApto;
+public class VisitanteForm {
+    private Long idApto;
     private String nome;
     private String rg;
     private String cpf;
@@ -21,10 +19,8 @@ public class VisitanteDto {
     private String telefone2;
     private String obs;
 
-    public VisitanteDto(Visitante visitante){
-        EntityToDto entityToDto = new EntityToDto();
-        this.idVisitante=visitante.getIdVisitante();
-        this.idApto=entityToDto.conversor(visitante.getIdApto());
+    public VisitanteForm(Visitante visitante){
+        this.idApto=visitante.getIdApto().getIdApto();
         this.nome=visitante.getNome();
         this.rg=visitante.getRg();
         this.cpf=visitante.getCpf();

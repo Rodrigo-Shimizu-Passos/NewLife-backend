@@ -1,6 +1,7 @@
 package br.com.itbeta.newlife.controller;
 
 import br.com.itbeta.newlife.controller.dto.FuncionarioDto;
+import br.com.itbeta.newlife.controller.form.FuncionarioForm;
 import br.com.itbeta.newlife.services.FuncionarioService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.convert.ConversionService;
@@ -23,8 +24,8 @@ public class FuncionarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable Long id) {
-        FuncionarioDto dto = this.service.findById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(dto);
+        FuncionarioForm form = this.service.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(form);
     }
 
     @GetMapping("/all")
@@ -40,15 +41,15 @@ public class FuncionarioController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<?> createFuncionario(@RequestBody FuncionarioDto dto){
-        this.service.createFuncionario(dto);
+    public ResponseEntity<?> createFuncionario(@RequestBody FuncionarioForm form){
+        this.service.createFuncionario(form);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<?> updateFuncionario(@PathVariable Long id, @RequestBody FuncionarioDto dto){
-        this.service.updateFuncionario(id,dto);
+    public ResponseEntity<?> updateFuncionario(@PathVariable Long id, @RequestBody FuncionarioForm form){
+        this.service.updateFuncionario(id,form);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

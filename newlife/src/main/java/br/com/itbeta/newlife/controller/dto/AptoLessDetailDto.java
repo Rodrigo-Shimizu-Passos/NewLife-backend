@@ -3,17 +3,15 @@ package br.com.itbeta.newlife.controller.dto;
 import br.com.itbeta.newlife.model.Apartamento;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
-public class ApartamentoDto {
-
-    private Long idApto;
+public class AptoLessDetailDto {
     private Long numeroApto;
 
-    public ApartamentoDto(Apartamento apartamento){
-        this.idApto=apartamento.getIdApto();
+    public AptoLessDetailDto(Apartamento apartamento){
         this.numeroApto= apartamento.getNumeroApto();
     }
-
 }

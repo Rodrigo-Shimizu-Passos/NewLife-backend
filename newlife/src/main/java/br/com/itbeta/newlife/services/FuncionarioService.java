@@ -1,7 +1,10 @@
 package br.com.itbeta.newlife.services;
 
 import br.com.itbeta.newlife.controller.dto.FuncionarioDto;
+import br.com.itbeta.newlife.controller.form.FuncionarioForm;
 import br.com.itbeta.newlife.model.Funcionario;
+import br.com.itbeta.newlife.model.Morador;
+import br.com.itbeta.newlife.repository.ApartamentoRepository;
 import br.com.itbeta.newlife.repository.FuncionarioRepository;
 import br.com.itbeta.newlife.repository.specification.FuncionarioSpecifications;
 import lombok.AllArgsConstructor;
@@ -16,19 +19,31 @@ import org.springframework.web.server.ResponseStatusException;
 public class FuncionarioService {
     private final FuncionarioRepository repository;
 
-    public FuncionarioDto findById(Long idFuncionario){
+    private final ApartamentoRepository apartamentoRepository;
+
+    public FuncionarioForm findById(Long idFuncionario){
         Funcionario f = this.repository.findById(idFuncionario).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return new FuncionarioDto(f);
+        return new FuncionarioForm(f);
     }
 
-    public void createFuncionario(FuncionarioDto dto){
-        Funcionario f = new Funcionario(dto);
+    public void createFuncionario(FuncionarioForm form){
+        Funcionario f = Funcionario
+                .builder()
+                .nome(form.getNome())
+                .rg(form.getRg())
+                .cpf(form.getCpf())
+                .telefone1(form.getTelefone1())
+                .telefone2(form.getTelefone2())
+                .obs(form.getObs())
+                .build();
+        f.addApartamentos(this.apartamentoRepository.findById(form.getIdApto()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND)));
         this.repository.save(f);
     }
 
-    public void updateFuncionario(Long idFuncionario, FuncionarioDto dto){
+    public void updateFuncionario(Long idFuncionario, FuncionarioForm form){
         Funcionario f = this.repository.findById(idFuncionario).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        f.update(dto);
+        f.addApartamentos(this.apartamentoRepository.findById(form.getIdApto()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND)));
+        f.update(form);
         repository.save(f);
     }
 

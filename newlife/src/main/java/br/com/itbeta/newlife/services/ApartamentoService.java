@@ -4,6 +4,7 @@ import br.com.itbeta.newlife.controller.dto.ApartamentoDto;
 import br.com.itbeta.newlife.controller.form.ApartamentoForm;
 import br.com.itbeta.newlife.model.Apartamento;
 import br.com.itbeta.newlife.repository.ApartamentoRepository;
+import br.com.itbeta.newlife.repository.projections.AptoDetails;
 import br.com.itbeta.newlife.repository.specification.ApartamentoSpecifications;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,14 +25,14 @@ public class ApartamentoService {
         return new ApartamentoDto(a);
     }
 
-    public void createApartamento (ApartamentoDto dto){
-        Apartamento a=new Apartamento(dto);
+    public void createApartamento (ApartamentoForm form){
+        Apartamento a=new Apartamento(form);
         this.repository.save(a);
     }
 
-    public void updateApartamento(Long idApto, ApartamentoDto dto){
+    public void updateApartamento(Long idApto, ApartamentoForm form){
         Apartamento a = this.repository.findById(idApto).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
-        a.update(dto);
+        a.update(form);
         repository.save(a);
     }
 
@@ -40,12 +41,16 @@ public class ApartamentoService {
         repository.delete(a);
     }
 
-    public Page<Apartamento> findAll(Pageable pageable){
+    public Page<Apartamento> findAllPaginated(Pageable pageable){
         return this.repository.findAll(pageable);
     }
 
-    public Page<Apartamento> findAll(Pageable pageable, String query){
-        return this.repository.findAll(ApartamentoSpecifications.likeGenericQuery(query), pageable);
+    public List<AptoDetails> findAll(){
+        return this.repository.findAllAptos();
+    }
+
+    public Page<AptoDetails> findAllApto(Pageable pageable){
+        return this.repository.findAllApto(pageable);
     }
 
 }

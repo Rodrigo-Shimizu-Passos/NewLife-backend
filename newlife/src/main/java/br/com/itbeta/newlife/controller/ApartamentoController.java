@@ -1,10 +1,12 @@
 package br.com.itbeta.newlife.controller;
 
 import br.com.itbeta.newlife.controller.dto.ApartamentoDto;
+import br.com.itbeta.newlife.controller.dto.FuncionarioDto;
 import br.com.itbeta.newlife.controller.form.ApartamentoForm;
-import br.com.itbeta.newlife.controller.form.AtualizacaoApartamentoForm;
+import br.com.itbeta.newlife.conversor.EntityToDto;
 import br.com.itbeta.newlife.model.Apartamento;
 import br.com.itbeta.newlife.repository.ApartamentoRepository;
+import br.com.itbeta.newlife.repository.projections.AptoDetails;
 import br.com.itbeta.newlife.services.ApartamentoService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +31,17 @@ public class ApartamentoController {
     private final ApartamentoService service;
     private final ConversionService conversionService;
 
-    @GetMapping("/all")
+    @GetMapping("/allPaginated")
     public @ResponseBody Page<ApartamentoDto> findAllPaginated(@RequestParam(required = false) String query, Pageable pageable){
-        if(query==null){
-            return this.service.findAll(pageable).map(entity-> this.conversionService.convert(entity, ApartamentoDto.class));
+        //if (query==null){
+            return this.service.findAllPaginated(pageable).map(entity-> this.conversionService.convert(entity, ApartamentoDto.class));
         }
-       return this.service.findAll(pageable, query).map(entity-> this.conversionService.convert(entity, ApartamentoDto.class));
+        //return this.service.findAll(pageable, query).map(entity->this.conversionService.convert(entity, ApartamentoDto.class));
+    //}
+
+    @GetMapping("/all")
+    public @ResponseBody List<AptoDetails> findAll(){
+        return this.service.findAll();
     }
 
     @GetMapping("/{idApto}")
@@ -45,15 +52,15 @@ public class ApartamentoController {
 
     @PostMapping()
     @Transactional
-    public ResponseEntity<?> createApartamento (@RequestBody ApartamentoDto dto){
-        this.service.createApartamento(dto);
+    public ResponseEntity<?> createApartamento (@RequestBody ApartamentoForm form){
+        this.service.createApartamento(form);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/{idApto}")
     @Transactional
-    public ResponseEntity<?> updateApartamento(@PathVariable Long idApto, @RequestBody ApartamentoDto dto){
-        this.service.updateApartamento(idApto, dto);
+    public ResponseEntity<?> updateApartamento(@PathVariable Long idApto, @RequestBody ApartamentoForm form){
+        this.service.updateApartamento(idApto, form);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
