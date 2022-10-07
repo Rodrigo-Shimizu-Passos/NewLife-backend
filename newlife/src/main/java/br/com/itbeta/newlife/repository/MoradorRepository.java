@@ -18,14 +18,14 @@ import java.util.List;
 @Repository
 public interface MoradorRepository extends JpaRepository<Morador, Long> , JpaSpecificationExecutor<Morador> {
     @Query(value = "select Apartamento.numeroApto as idApto, Morador.nome, Morador.rg, Morador.cpf, Morador.telefone1, \n" +
-            "Morador.telefone2, Morador.email, Morador.contatoEmerg, Morador.TelefoneEmerg, Morador.obs\n" +
+            "Morador.telefone2, Morador.email, Morador.contatoEmerg, Morador.telefoneEmerg, Morador.obs\n" +
             "FROM Morador\n" +
-            "JOIN Apartamento ON Morador.idApto = Apartamento.idApto", nativeQuery = true)
+            "JOIN Apartamento ON Morador.idApto = Apartamento.idApto ORDER BY Apartamento.numeroApto ASC", nativeQuery = true)
     List<MoradorDetails> findAllList();
 
     @Query(value = "select Apartamento.numeroApto as idApto, Morador.nome, Morador.rg, Morador.cpf, Morador.telefone1, \n" +
             "Morador.telefone2, Morador.email, Morador.contatoEmerg, Morador.TelefoneEmerg, Morador.obs\n" +
             "FROM Morador\n" +
-            "JOIN Apartamento ON Morador.idApto = Apartamento.idApto WHERE (Morador.nome like %:query%) or (Morador.cpf like %:query%) ", nativeQuery = true)
+            "JOIN Apartamento ON Morador.idApto = Apartamento.idApto WHERE (Morador.nome like %:query%) or (Morador.cpf like %:query%) ORDER BY Apartamento.numeroApto ASC", nativeQuery = true)
     List<MoradorDetails> findAllList(@Nullable String query);
 }

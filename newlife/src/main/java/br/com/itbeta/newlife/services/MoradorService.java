@@ -2,6 +2,7 @@ package br.com.itbeta.newlife.services;
 
 import br.com.itbeta.newlife.controller.dto.MoradorDto;
 import br.com.itbeta.newlife.controller.form.MoradorForm;
+import br.com.itbeta.newlife.exception.SheetImportException;
 import br.com.itbeta.newlife.model.Apartamento;
 import br.com.itbeta.newlife.model.Morador;
 import br.com.itbeta.newlife.repository.ApartamentoRepository;
@@ -90,10 +91,7 @@ public class MoradorService {
     public void importMorador(MultipartFile file) throws IOException, NoSuchAlgorithmException, ParserConfigurationException,
             OpenXML4JException, SAXException{
         Path filepath = this.fileService.save(file,"");
-        try{
-            this.importService.importSheet(file.getInputStream());
-        }catch(Exception e){
-            throw e;
-        }
+        this.importService.importSheet(file.getInputStream());
+
     }
 }
